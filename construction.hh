@@ -37,7 +37,8 @@ public:
 
 protected:
 
-    G4bool checkOverlaps = true;
+    //ca sa nu mai inundam terminalul sunt ok :)
+    G4bool checkOverlaps = false;
 
     // logical volumes
     G4LogicalVolume *fScoringVolume = nullptr;
@@ -50,6 +51,9 @@ protected:
 
     // all 64 dE strip logical volumes
     std::vector<G4LogicalVolume*> fDeltaEStrips;
+
+    // all 16 E sector logical volumes
+    std::vector<G4LogicalVolume*> fESectors;
 
     G4GenericMessenger *fMessenger;
 

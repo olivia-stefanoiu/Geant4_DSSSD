@@ -1,46 +1,41 @@
 #include "detector.hh"
 
-
 MySensitiveDetector::MySensitiveDetector(G4String name) : G4VSensitiveDetector(name) {}
 
 MySensitiveDetector::~MySensitiveDetector() {}
 
-
 G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist) {
 
-    G4Track *track = aStep->GetTrack();
-    //track->SetTrackStatus(fStopAndKill);
 
+     G4cout << "=== ProcessHits called! edep = " 
+           << aStep->GetTotalEnergyDeposit() << " ===" << G4endl;
 
+    // skip steps with no energy deposition
+    //any touch counts as an interaction, but we can pass through the volume without energy depositon
+    G4double edep = aStep->GetTotalEnergyDeposit();
+    if (edep == 0.) return false;
+
+    //aStep is just naming convention
     G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
-    G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
 
+    // actual hit position in global coordinates
+    G4ThreeVector hitPos = preStepPoint->GetPosition();
 
-    G4ThreeVector posPhoton = preStepPoint->GetPosition();
-
-    //G4cout <<" PHOTON POSITION: "<< posPhoton <<G4endl; // display all orginal position of the photons/ coordinates(display position when photon entern into detector)
-
+    // which detector was hit (0-63 = dE strips, 100-115 = E sectors)
     const G4VTouchable *touchable = aStep->GetPreStepPoint()->GetTouchable();
+    G4int copyNo = touchable->GetCopyNumber();
 
-    G4int copyNo = touchable->GetCopyNumber(); //copy number construction for unique identifiers on detector
-    G4cout << "Copy number of detector: "<< copyNo << G4endl; //display copy Number(the number of the detector that fired- mapping of touches)
-
-
-    G4VPhysicalVolume *physVol = touchable->GetVolume(); // access the real pos.
-    G4ThreeVector posDetector = physVol->GetTranslation();// get the exact position of the detectors/voxels
-
+    // event ID
     G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
 
     G4AnalysisManager *man = G4AnalysisManager::Instance();
 
-    man->FillNtupleIColumn(0, evt);
-
-    man->FillNtupleDColumn(1, posDetector[0]);
-    man->FillNtupleDColumn(2, posDetector[1]);
-    man->FillNtupleDColumn(3, posDetector[2]);
-
+    man->FillNtupleIColumn(0, 0, evt);
+    man->FillNtupleIColumn(0, 1, copyNo);
+    man->FillNtupleDColumn(0, 2, hitPos[0]);
+    man->FillNtupleDColumn(0, 3, hitPos[1]);
+    man->FillNtupleDColumn(0, 4, hitPos[2]);
     man->AddNtupleRow(0);
 
     return true;
 }
-

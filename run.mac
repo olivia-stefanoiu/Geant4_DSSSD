@@ -1,14 +1,14 @@
-/run/numberOfThreads 6
+/run/numberOfThreads 1
 /run/initialize
-#/gun/momentumAmp 1 GeV
-#/gun/position 0 0 20*cm
-#/gun/particle gamma
-#/run/beamOn 100
 
-/gps/particle gamma
+/gps/particle ion
+/gps/ion 14 34 0
 /gps/pos/type Point
-/gps/pos/centre 0 0 20*cm
+/gps/pos/centre 0 0 -400 mm
 /gps/ang/type iso
-/gps/energy 150. KeV
+/gps/ang/mintheta 0 deg
+/gps/ang/maxtheta 8 deg
+/gps/energy 48. MeV
 
-/run/beamOn 100
+/run/printProgress 1
+/run/beamOn 10000

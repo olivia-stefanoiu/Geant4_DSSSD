@@ -9,13 +9,16 @@
 
 MyPhysicsList::MyPhysicsList() {
 
-    defaultCutValue = 1.0*mm;
+    //ma omoara cu lista aia de 1000 de fenomene
+       SetVerboseLevel(0);
 
-    RegisterPhysics(new G4EmStandardPhysics());
-    //RegisterPhysics(new G4OpticalPhysics());
-    RegisterPhysics(new G4DecayPhysics());
-    RegisterPhysics(new G4RadioactiveDecayPhysics());
-    RegisterPhysics(new G4HadronPhysicsQGSP_BERT());
+   //how long must a secondary particle live to detect it
+    defaultCutValue = 1.0*mm;
+    std::cout<<"PHYSICS.cc"<<'\n';
+    RegisterPhysics(new G4EmStandardPhysics(0));  // pass 0 = silent
+    RegisterPhysics(new G4DecayPhysics(0));
+    RegisterPhysics(new G4RadioactiveDecayPhysics(0));
+    RegisterPhysics(new G4HadronPhysicsQGSP_BERT(0));
 }
 
 MyPhysicsList::~MyPhysicsList() {}

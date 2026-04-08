@@ -1,0 +1,11 @@
+# Minimal test - simplest possible run
+/run/initialize
+
+# Use the simplest possible source: a gamma point source
+/gps/particle gamma
+/gps/pos/type Point
+/gps/pos/centre 0 0 -50 mm
+/gps/ang/type iso
+/gps/energy 1. MeV
+
+/run/beamOn 10
