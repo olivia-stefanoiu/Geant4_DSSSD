@@ -1,4 +1,5 @@
 #include "construction.hh"
+#include "G4SDManager.hh"
 #include <string>
 
 MyDetectorConstruction::MyDetectorConstruction() {
@@ -131,6 +132,7 @@ G4VPhysicalVolume *MyDetectorConstruction::DefineVolumes() {
 
     fScoringVolume = fDeltaEStrips[0];
 
+    /* ── E DSSSD COMMENTED OUT ──────────────────────────────────────────────
     // ── E DSSSD (1500 μm, 16 sectors) ─────────────────────────────────────
     //
     // Same inner/outer radii as dE.
@@ -180,6 +182,7 @@ G4VPhysicalVolume *MyDetectorConstruction::DefineVolumes() {
 
         fESectors.push_back(logicSector);
     }
+    */ // ── END E DSSSD COMMENTED OUT ──────────────────────────────────────
 
     std::cout<<"CONSTRUCT.CC"<<'\n';
     return physWorld;
@@ -190,11 +193,21 @@ void MyDetectorConstruction::ConstructSDandField()
     std::cout<<"CONSTRUCTION.CC CONSTRUCTFIELD"<<'\n';
     // dE strips — one SD instance, copy number tells you which strip fired
     auto *sensDet_dE = new MySensitiveDetector("dE_strips");
+
+    // OLD VERSION (missing this line — caused "is not found" crash):
+    // auto *sensDet_dE = new MySensitiveDetector("dE_strips");
+    // for (auto *lv : fDeltaEStrips)
+    //     lv->SetSensitiveDetector(sensDet_dE);
+
+    // NEW VERSION — register with G4SDManager so the hits collection
+    // can be found by name in EndOfEventAction
+    G4SDManager::GetSDMpointer()->AddNewDetector(sensDet_dE);
+
     for (auto *lv : fDeltaEStrips)
         lv->SetSensitiveDetector(sensDet_dE);
 
-    // E sectors — separate SD instance, copy number tells you which sector fired
-    auto *sensDet_E = new MySensitiveDetector("E_sectors");
-    for (auto *lv : fESectors)
-        lv->SetSensitiveDetector(sensDet_E);
+    // E sectors — commented out
+    // auto *sensDet_E = new MySensitiveDetector("E_sectors");
+    // for (auto *lv : fESectors)
+    //     lv->SetSensitiveDetector(sensDet_E);
 }

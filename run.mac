@@ -1,14 +1,20 @@
 /run/numberOfThreads 1
 /run/initialize
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/process/verbose 0
 
 /gps/particle ion
 /gps/ion 14 34 0
 /gps/pos/type Point
-/gps/pos/centre 0 0 -400 mm
-/gps/ang/type iso
+/gps/pos/centre 0 0 -50 mm
+/gps/ang/type beam1d
+/gps/ang/rot1 1 0 0 
+/gps/ang/rot2 0 -1 0
 /gps/ang/mintheta 0 deg
 /gps/ang/maxtheta 8 deg
-/gps/energy 48. MeV
+/gps/energy 50. MeV
 
 /run/printProgress 1
 /run/beamOn 10000
