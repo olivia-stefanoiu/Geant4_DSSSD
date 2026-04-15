@@ -1,7 +1,6 @@
 #ifndef EVENT_HH
 #define EVENT_HH
 
-// NEW VERSION — pulls the hits collection and writes all hits to ntuples
 #include "G4UserEventAction.hh"
 #include "G4Event.hh"
 
@@ -14,7 +13,8 @@ public:
     void EndOfEventAction(const G4Event *) override;
 
 private:
-    G4int fHCID = -1;   // cached hits collection ID
+    G4int fHCID_dE = -1;   // cached hits collection ID for dE strips
+    G4int fHCID_E  = -1;   // cached hits collection ID for E sectors
 };
 
 #endif

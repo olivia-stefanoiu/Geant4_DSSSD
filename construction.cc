@@ -132,7 +132,6 @@ G4VPhysicalVolume *MyDetectorConstruction::DefineVolumes() {
 
     fScoringVolume = fDeltaEStrips[0];
 
-    /* ── E DSSSD COMMENTED OUT ──────────────────────────────────────────────
     // ── E DSSSD (1500 μm, 16 sectors) ─────────────────────────────────────
     //
     // Same inner/outer radii as dE.
@@ -142,7 +141,7 @@ G4VPhysicalVolume *MyDetectorConstruction::DefineVolumes() {
     constexpr G4double E_innerR     = dE_R0;                    // 24.0 mm
     constexpr G4double E_outerR     = dE_R0 + 16 * dE_H;        // 48.08 mm
     constexpr G4double E_thickness  = 1.500 * mm;
-    constexpr G4double E_posZ       = 50.0  * mm;               // adjust to your beam-line
+    constexpr G4double E_posZ       = 3  * mm;               // adjust to your beam-line
     constexpr G4double sectorWidth  = 22.5  * deg;              // 360/16
 
     fESectors.clear();
@@ -159,8 +158,8 @@ G4VPhysicalVolume *MyDetectorConstruction::DefineVolumes() {
             E_innerR,
             E_outerR,
             E_thickness / 2.0,
-            sec * sectorWidth +0.1*deg,   // startPhi, CCW from 0
-            sectorWidth-0.1*deg          // deltaPhi
+            sec * sectorWidth + 0.1*deg,   // startPhi, CCW from 0
+            sectorWidth - 0.1*deg          // deltaPhi
         );
 
         G4LogicalVolume* logicSector = new G4LogicalVolume(
@@ -182,7 +181,6 @@ G4VPhysicalVolume *MyDetectorConstruction::DefineVolumes() {
 
         fESectors.push_back(logicSector);
     }
-    */ // ── END E DSSSD COMMENTED OUT ──────────────────────────────────────
 
     std::cout<<"CONSTRUCT.CC"<<'\n';
     return physWorld;
@@ -191,23 +189,16 @@ G4VPhysicalVolume *MyDetectorConstruction::DefineVolumes() {
 void MyDetectorConstruction::ConstructSDandField()
 {
     std::cout<<"CONSTRUCTION.CC CONSTRUCTFIELD"<<'\n';
-    // dE strips — one SD instance, copy number tells you which strip fired
+
+    // ── dE strips SD ───────────────────────────────────────────────────────
     auto *sensDet_dE = new MySensitiveDetector("dE_strips");
-
-    // OLD VERSION (missing this line — caused "is not found" crash):
-    // auto *sensDet_dE = new MySensitiveDetector("dE_strips");
-    // for (auto *lv : fDeltaEStrips)
-    //     lv->SetSensitiveDetector(sensDet_dE);
-
-    // NEW VERSION — register with G4SDManager so the hits collection
-    // can be found by name in EndOfEventAction
     G4SDManager::GetSDMpointer()->AddNewDetector(sensDet_dE);
-
     for (auto *lv : fDeltaEStrips)
         lv->SetSensitiveDetector(sensDet_dE);
 
-    // E sectors — commented out
-    // auto *sensDet_E = new MySensitiveDetector("E_sectors");
-    // for (auto *lv : fESectors)
-    //     lv->SetSensitiveDetector(sensDet_E);
+    // ── E sectors SD ───────────────────────────────────────────────────────
+    auto *sensDet_E = new MySensitiveDetector("E_sectors");
+    G4SDManager::GetSDMpointer()->AddNewDetector(sensDet_E);
+    for (auto *lv : fESectors)
+        lv->SetSensitiveDetector(sensDet_E);
 }
