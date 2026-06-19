@@ -16,11 +16,11 @@
 /vis/viewer/set/style wireframe
 /vis/viewer/set/auxiliaryEdge true
 /vis/viewer/set/lineSegmentsPerCircle 100
-# /vis/modeling/trajectories/drawByParticleID-0/set gamma yellow
+/vis/modeling/trajectories/drawByParticleID-0/set gamma yellow
 
 
-#/vis/filtering/trajectories/create/particleFilter
-#/vis/filtering/trajectories/particleFilter-0/add ion
+/vis/filtering/trajectories/create/particleFilter
+/vis/filtering/trajectories/particleFilter-0/add Si34
 
 
 # Draw smooth trajectories at end of event, showing trajectory points
@@ -33,13 +33,11 @@
 /tracking/storeTrajectory 1
 
 
-
-
 /vis/scene/endOfEventAction accumulate
 
 # Axes, scale, etc.
-/vis/scene/add/scale   # Simple scale line
-/vis/scene/add/axes    # Simple axes: x=red, y=green, z=blue.
+#/vis/scene/add/scale   # Simple scale line
+#/vis/scene/add/axes    # Simple axes: x=red, y=green, z=blue.
 
 /vis/geometry/set/visibility World 0 false
 

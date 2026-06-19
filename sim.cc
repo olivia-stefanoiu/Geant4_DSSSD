@@ -15,6 +15,8 @@
 int main(int argc, char **argv) {
 
     auto *runManager = G4RunManagerFactory::CreateRunManager(G4RunManagerType::Serial);
+    G4Random::setTheSeed(time(nullptr));
+
 
     runManager->SetUserInitialization(new MyDetectorConstruction());
     runManager->SetUserInitialization(new MyPhysicsList());
@@ -39,6 +41,7 @@ int main(int argc, char **argv) {
     {
         UImanager->ApplyCommand("/run/initialize");
         UImanager->ApplyCommand("/control/execute vis.mac");
+        UImanager->ApplyCommand("/control/execute run.mac");
         ui->SessionStart();
     }
     else

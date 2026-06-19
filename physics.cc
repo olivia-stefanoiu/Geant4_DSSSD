@@ -9,11 +9,10 @@
 
 MyPhysicsList::MyPhysicsList() {
 
-    //ma omoara cu lista aia de 1000 de fenomene
-       SetVerboseLevel(0);
+    SetVerboseLevel(0);
 
    //how long must a secondary particle live to detect it
-    defaultCutValue = 1.0*mm;
+    defaultCutValue = 2*mm;
     std::cout<<"PHYSICS.cc"<<'\n';
     RegisterPhysics(new G4EmStandardPhysics(0));  // pass 0 = silent
     RegisterPhysics(new G4DecayPhysics(0));

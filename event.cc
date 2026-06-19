@@ -75,11 +75,19 @@ void MyEventAction::EndOfEventAction(const G4Event *event)
     }
 
     // optional: periodic status print
-    if (eventID % 1000 == 0) {
-        G4int n_dE = dE_hits ? dE_hits->entries() : 0;
-        G4int n_E  = E_hits  ? E_hits->entries()  : 0;
+    // if (eventID % 10 == 0) {
+    //     G4int n_dE = dE_hits ? dE_hits->entries() : 0;
+    //     G4int n_E  = E_hits  ? E_hits->entries()  : 0;
+    //     G4cout << "Event " << eventID
+    //            << ": " << n_dE << " dE hits, "
+    //            << n_E << " E hits" << G4endl;
+    // }
+    G4int n_dE = dE_hits ? dE_hits->entries() : 0;
+    G4int n_E  = E_hits  ? E_hits->entries()  : 0;
+
+    if (n_dE != 0 || n_E != 0) {
         G4cout << "Event " << eventID
-               << ": " << n_dE << " dE hits, "
-               << n_E << " E hits" << G4endl;
+            << ": " << n_dE << " dE hits, "
+            << n_E << " E hits" << G4endl;
     }
 }

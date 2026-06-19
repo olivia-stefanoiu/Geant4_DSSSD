@@ -5,8 +5,8 @@
 MyDetectorConstruction::MyDetectorConstruction() {
 
 
-    env_sizeXY   = 0.15 * m;
-    env_sizeZ    = 1.0 * m;
+    env_sizeXY   = 200 * mm;
+    env_sizeZ    = 10 * m;
     world_sizeXY = 1.2 * env_sizeXY;
     world_sizeZ  = 1.2 * env_sizeZ;
 
@@ -24,14 +24,14 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct() {
 
 void MyDetectorConstruction::DefineMaterials() {
     G4NistManager *nist = G4NistManager::Instance();
-
-    world_mat = nist->FindOrBuildMaterial("G4_AIR");
-    env_mat   = nist->FindOrBuildMaterial("G4_AIR");
+    std::cout << "Materials mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmdefined:" << std::endl;
+    world_mat = nist->FindOrBuildMaterial("G4_Galactic");
+    env_mat   = nist->FindOrBuildMaterial("G4_Galactic");
     silicon   = nist->FindOrBuildMaterial("G4_Si");
 }
 
 G4VPhysicalVolume *MyDetectorConstruction::DefineVolumes() {
-
+    std::cout<<"VOLUMESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS";
     // ── World ──────────────────────────────────────────────────────────────
     solidWorld = new G4Box("World",
                            0.5 * world_sizeXY,
@@ -70,7 +70,7 @@ G4VPhysicalVolume *MyDetectorConstruction::DefineVolumes() {
     constexpr G4double dE_H         = 1.505 * mm;
     constexpr G4double dE_Hactif    = 1.425 * mm;
     constexpr G4double dE_thickness = 0.300 * mm;
-    constexpr G4double dE_posZ      = 0.0   * mm;
+    constexpr G4double dE_posZ      = 4000.2   * mm; //the center of the sim is in 0
     constexpr G4double quadWidth    = 90.0  * deg;
 
     const G4double quadPhiStart[4] = {
@@ -141,7 +141,7 @@ G4VPhysicalVolume *MyDetectorConstruction::DefineVolumes() {
     constexpr G4double E_innerR     = dE_R0;                    // 24.0 mm
     constexpr G4double E_outerR     = dE_R0 + 16 * dE_H;        // 48.08 mm
     constexpr G4double E_thickness  = 1.500 * mm;
-    constexpr G4double E_posZ       = 3  * mm;               // adjust to your beam-line
+    constexpr G4double E_posZ       = 4005.2  * mm;               // adjust to your beam-line
     constexpr G4double sectorWidth  = 22.5  * deg;              // 360/16
 
     fESectors.clear();
